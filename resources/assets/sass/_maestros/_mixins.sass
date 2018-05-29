@@ -1,0 +1,20 @@
+/**
+ ** Mixin: background-color
+ ** Parámetros: Color
+ **
+ ** Descripción: Este mixin establece todas las
+ **              propiedades de los botones que se
+ **              utilizan en el proyecto. Recibe el
+ **              color como un parámetro y se lo aplica
+ **              al borde, al color de la letra y a la sombra.
+ **/  
+=background-color($color)
+  border: 1px solid $color
+  color: $color
+
+  &:hover
+    background-color: $color
+    color: white
+
+  &:active
+    box-shadow: 0px  0px 1px 1px darken($color, 20%) inset

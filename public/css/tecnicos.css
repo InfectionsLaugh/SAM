@@ -1,0 +1,160 @@
+@keyframes apa {
+  from {
+    top: 250px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 100%;
+  }
+}
+
+body {
+  background: #eeeeee !important;
+}
+
+.wrapper {
+  display: flex;
+}
+
+#content {
+  width: calc(100% - 250px);
+  padding: 40px;
+  min-height: 100vh;
+  transition: all 0.3s;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+#breads {
+  margin-bottom: 25px;
+}
+
+#tecnicos-admin-card, #mants-admin-card {
+  height: 50vh;
+}
+
+#tecnicos-admin-card  > .list-group {
+  text-align: center !important;
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  height: 100vh;
+  position: fixed;
+  background-color: #7386d5;
+  color: white;
+  transition: all 0.3s
+}
+
+#sidebar.active {
+  margin-left: -250px;
+}
+
+#sidebar.active + #content {
+  width: 100%;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #273572;
+  text-align: center;
+}
+
+.round-image {
+  border-radius: 50% !important;
+  margin-bottom: 15px;
+}
+
+.center-image {
+  text-align: center;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+#sidebar ul li a:hover {
+  color: #7386D5;
+  background: #fff;
+}
+
+#sidebar ul li.active > a {
+  color: #6d7fcc;
+  background-color: white;
+}
+
+#sidebar a[aria-expanded="true"] {
+  color: #fff;
+  background: #6d7fcc;
+}
+
+.table-input {
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+  padding-left: 30px !important;
+  background: #6d7fcc;
+}
+
+.animar {
+  animation: apa 1s ease-in both; 
+}
+
+#sidebar a[data-toggle="collapse"] {
+  position: relative;
+}
+
+#sidebar a[aria-expanded="false"]::before, #sidebar a[aria-expanded="true"]::before {
+  content: '\f077';
+  display: block;
+  position: absolute;
+  right: 20px;
+  font-family: 'Font Awesome';
+  font-size: 0.6em;
+}
+
+#sidebar a[aria-expanded="true"]::before {
+  content: '\f078';
+}
+
+#tipo_usuario {
+  color: #757575;
+}
+
+@media (max-width: 768px) {
+  #sidebar {
+      margin-left: -250px;
+  }
+  #sidebar.active {
+      margin-left: 0;
+  }
+
+  #sidebar + #content {
+    width: 100%;
+  }
+
+  #sidebar.active + #content {
+    transform: translateX(250px);
+  }
+}
