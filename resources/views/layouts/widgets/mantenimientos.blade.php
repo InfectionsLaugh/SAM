@@ -7,7 +7,11 @@
           @foreach ($solicitudes as $solicitud)
             <a href="#" role="tabpanel" class="list-group-item list-group-item-action flex-column align-items-start">
               <div class="d-flex w-100 justify-content-between">
+                @if(count($solicitud->maestro))
                 <h5 class="mb-1">Prof. {{ $solicitud->maestro->nombre . ' ' . $solicitud->maestro->ap_pat . ' ' . $solicitud->maestro->ap_mat}}</h5>
+                @else
+                <p class="h5 mb-1">{{$solicitud->descripcion}}</p>
+                @endif
                 @if($solicitud->created_at->diffInDays() == 0)
                   <small>Hoy</small>
                 @else

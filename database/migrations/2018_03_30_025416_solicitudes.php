@@ -16,11 +16,14 @@ class Solicitudes extends Migration
         Schema::create('solicitudes', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('tecnico_id')->nullable();
-            $table->integer('maestro_id');
+            $table->integer('maestro_id')->nullable();
+            $table->text('descripcion');
+            $table->integer('tipo_tarea');
+            $table->integer('equipo')->nullable();
             $table->dateTime('fecha_cita');
+            $table->text('ruta_sar')->nullable();
             $table->text('estado');
-            $table->integer('tipo_solicitud');
-            $table->text('ruta_sar');
+            $table->text('observaciones')->nullable();
             $table->timestamps();
         });
     }

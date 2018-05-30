@@ -9,6 +9,7 @@
       <th class="font-weight-bold">Activo</th>
       <th class="font-weight-bold">Tipo de usuario</th>
       <th class="font-weight-bold"># de huella</th>
+      <th class="font-weight-bold">Guardar Cambios</th>
       <th class="font-weight-bold">Eliminar</th>
     </tr>
   </thead>
@@ -16,16 +17,16 @@
     @foreach ($tecnicos as $tecnico)
       <tr>
         <td>
-          <input type="text" id="form1" class="form-control table-input" value="{{ $tecnico->nombre }}">
+          <input type="text" id="nombre_tecnico_{{$tecnico->id}}" class="form-control table-input" value="{{ $tecnico->nombre }}">
         </td>
         <td>
-          <input type="text" id="form1" class="form-control table-input" value="{{ $tecnico->ap_pat . ' ' . $tecnico->ap_mat }}">  
+          <input type="text" id="aps_tecnico_{{$tecnico->id}}" class="form-control table-input" value="{{ $tecnico->ap_pat . ' ' . $tecnico->ap_mat }}">  
         </td>
         <td>
-          <input type="text" id="form1" class="form-control table-input" value="{{ $tecnico->matricula }}">  
+          <input type="text" id="matr_tecnico_{{$tecnico->id}}" class="form-control table-input" value="{{ $tecnico->matricula }}">  
         </td>
         <td>
-          <input type="text" id="form1" class="form-control table-input" value="{{ $tecnico->email }}">
+          <input type="text" id="email_tecnico_{{$tecnico->id}}" class="form-control table-input" value="{{ $tecnico->email }}">
         </td>
         <td>
           <form method="post">
@@ -34,26 +35,32 @@
         </td>
         <td>
           @if($tecnico->activo)
-            Sí
+            <p class="h6" id="act_tecnico_{{$tecnico->id}}">Sí</p>
           @else
-            No
+            <p class="h6" id="act_tecnico_{{$tecnico->id}}">No</p>
           @endif
         </td>
         <td>
           @if($tecnico->tipo_usuario == 1)
-            <select name="tipo_usuario" required id="tipo_usuario" class="mdb-select">
-              <option value="1" selected>Administrador</option>
+            <select name="tipo_usuario_{{$tecnico->id}}" required id="tipo_usuario_{{$tecnico->id}}" class="mdb-select select_tipo">
+              <option value="1">Administrador</option>
               <option value="2">Técnico</option>
             </select>
           @else
-            <select name="tipo_usuario" required id="tipo_usuario" class="mdb-select">
-              <option value="" disabled selected>Tipo de usuario</option>
+            <select name="tipo_usuario_{{$tecnico->id}}" required id="tipo_usuario_{{$tecnico->id}}" class="mdb-select select_tipo">
               <option value="1">Administrador</option>
-              <option value="2" selected>Técnico</option>
+              <option value="2">Técnico</option>
             </select>
           @endif
         </td>
-        <td>{{ $tecnico->num_huella }}</td>
+        <td><input type="text" id="huella_tecnico_{{$tecnico->id}}" class="form-control table-input" value="{{ $tecnico->num_huella }}"></td>
+        <td>
+          <form method="post">
+            {{ csrf_field() }}
+            {{ method_field('PATCH') }}
+            <a href="#" id="modifica_tecnico_{{$tecnico->id}}" data-id="{{$tecnico->id}}" class="btn btn-success btn-sm mod_tec"><i class="fa fa-cog"></i></a>
+          </form>
+        </td>
         <td>
           <form method="POST">
             {{ csrf_field() }}

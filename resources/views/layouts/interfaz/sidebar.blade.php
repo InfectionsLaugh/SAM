@@ -19,30 +19,31 @@
         <ul class="collapse list-unstyled" id="maestrosSubmenu">
       @endif
       @if($seleccionado == 2)
-        <li class="active"><a href="#">Registrar maestro</a></li>
+        <li class="active"><a href="{{ url('/sam-admin/registra_maestro') }}">Registrar maestro</a></li>
       @else
-        <li><a href="{{ url('sam-admin/registra_tecnico') }}">Registrar maestro</a></li>
+        <li><a href="{{ url('/sam-admin/registra_maestro') }}">Registrar maestro</a></li>
       @endif
       @if($seleccionado == 3)
-        <li class="active"><a href="#">Lista de maestros</a></li>
+        <li class="active"><a href="{{ url('/sam-admin/lista_maestros') }}">Lista de maestros</a></li>
       @else
-        <li><a href="{{ url('sam-admin/lista_tecnicos') }}">Lista de maestros</a></li>
+        <li><a href="{{ url('/sam-admin/lista_maestros') }}">Lista de maestros</a></li>
       @endif
       </ul>
     </li>
+    @if(auth()->guard('web')->user()->tipo_usuario == 1)
     <li>
       <a href="#tecnicosSubmenu" class="sidebar-collapse" data-toggle="collapse" aria-expanded="false"> <i class="fa fa-user"></i> Técnicos </a>
-      @if($seleccionado == 2 || $seleccionado == 3)
+      @if($seleccionado == 4 || $seleccionado == 5)
         <ul class="list-unstyled" id="tecnicosSubmenu">
       @else
         <ul class="collapse list-unstyled" id="tecnicosSubmenu">
       @endif
-      @if($seleccionado == 2)
+      @if($seleccionado == 4)
         <li class="active"><a href="#">Registrar técnico</a></li>
       @else
         <li><a href="{{ url('sam-admin/registra_tecnico') }}">Registrar técnico</a></li>
       @endif
-      @if($seleccionado == 3)
+      @if($seleccionado == 5)
         <li class="active"><a href="#">Lista de técnicos</a></li>
       @else
         <li><a href="{{ url('sam-admin/lista_tecnicos') }}">Lista de técnicos</a></li>
@@ -51,13 +52,17 @@
     </li>
     <li>
       <a href="#mantenimientoSubmenu" class="sidebar-collapse" data-toggle="collapse" aria-expanded="false"> <i class="fa fa-cog"></i> Tareas </a>
-        @if($seleccionado >= 4 && $seleccionado <= 7)
+        @if($seleccionado >= 6 && $seleccionado <= 9)
           <ul class="list-unstyled" id="mantenimientoSubmenu">
         @else
           <ul class="collapse list-unstyled" id="mantenimientoSubmenu">
         @endif
-        <li><a href="#" class="nav-link">Crear nueva tarea</a></li>
-        @if($seleccionado == 6)
+        @if($seleccionado == 9)
+          <li class="active"><a href="#" class="nav-link">Crear nueva tarea</a></li>
+        @else
+          <li><a href=" {{ url('/sam-admin/crea_tarea') }} " class="nav-link">Crear nueva tarea</a></li>
+        @endif
+        @if($seleccionado == 8)
         <li class="active">
           <a class="nav-link" href="#"> Completadas </a>
         </li>
@@ -66,19 +71,20 @@
             <a class="nav-link" href=" {{ url('/sam-admin/documentos') }} "> Completadas </a>
           </li>
         @endif
-        @if($seleccionado == 4)
+        @if($seleccionado == 7)
           <li class="active"><a href="#">Asignar tarea</a></li>
         @else
           <li><a href="{{ url('sam-admin/mantenimientos') }}">Asignar tarea</a></li>
         @endif
-        @if($seleccionado == 5)
+        @if($seleccionado == 6)
           <li class="active"><a href="#">Pendientes</a></li>
         @else
           <li><a href="{{ url('sam-admin/pendientes') }}">Pendientes</a></li>
         @endif
       </ul>
     </li>
-    @if($seleccionado == 7)
+    @endif
+    @if($seleccionado == 10)
       <li class="nav-item active"><a href="#"><i class="fa fa-desktop"></i> Equipo</a></li>
     @else
       <li class="nav-item"><a href=" {{ url('/sam-admin/equipo') }} "><i class="fa fa-desktop"></i> Equipo</a></li>

@@ -18,7 +18,11 @@
       <tbody>
         @foreach ($mants as $mant)
           <tr>
+            @if(count($mant->maestro))
             <td>{{ $mant->maestro->nombre . ' ' . $mant->maestro->ap_pat }}</td>
+            @else
+            <td>N/A</td>
+            @endif
             <td>{{ \Carbon\Carbon::parse($mant->fecha_cita)->toDateString() }}</td>
             @if($mant->estado == 0)
               <td>Sin Completar</td>
@@ -59,6 +63,6 @@
       </tbody>
     </table>
   @else
-    <h1>No hay técnicos por el momento.</h1>
+    <h1>No hay tareas sin asignar por el momento.</h1>
   @endif
 @endsection

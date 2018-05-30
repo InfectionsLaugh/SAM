@@ -7,6 +7,17 @@
   <title>Document</title>
 </head>
 <body>
-  El profesor {{ $solicitud->maestro->nombre }} ha solicitado un nuevo mantenimiento el día {{ \Carbon\Carbon::parse($solicitud->fecha_cita)->toFormattedDateString() }}
+  <h3>Hola, {{$solicitud->nombre}}, se te ha asignado una nueva tarea:</h3>
+  <h3>Tipo: {{$solicitud->tipo_tarea}}</h3>
+  <h3>Descripción: {{$solicitud->descripcion}}</h3>
+  @if(count($solicitud->observaciones))
+  <h3>Observaciones: {{$solicitud->observaciones}}</h3>
+  @endif
+  @if(count($solicitud->maestro))
+  <h3>Maestro: {{$solicitud->maestro}}</h3>
+  @endif
+  @if(count($solicitud->equipo))
+  <h3>Equipo: {{$solicitud->equipo}}</h3>
+  @endif
 </body>
 </html>

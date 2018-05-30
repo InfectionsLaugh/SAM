@@ -13,23 +13,17 @@ class TecnicoController extends Controller
       return view('tecnicos.login');
     }
 
-    public function email() {
-      $data = array(
-        'name' => 'Lorena López',
-        'body' => 'Holo'
-      );
-
-      \Mail::send('layouts.emails.mail', $data, function($message) {
-        $message->to('lcamacho32@uabc.edu.mx', 'Lorena López')->subject('Prueba de email desde Laravel');
-      });
-    }
-
     public function inicio() {
       $seleccionado = 1;
-      $tecnicos = \App\Tecnico::all();
-      $maestros = \App\Maestro::all();
-      $solicitudes = \App\Solicitud::all();
-      return view('tecnicos.inicio', compact('tecnicos', 'seleccionado', 'maestros', 'solicitudes'));
+      if(auth()->guard('web')->user()->tipo_usuario == 1) {
+        $tecnicos = \App\Tecnico::all();
+        $maestros = \App\Maestro::all();
+        $solicitudes = \App\Solicitud::where('estado', 0)->get();
+        return view('tecnicos.inicio', compact('tecnicos', 'seleccionado', 'maestros', 'solicitudes'));
+      } else {
+        $sols_individuales = Solicitud::where('tecnico_id', auth()->guard('web')->user()->id)->where('estado', 0)->get();
+        return view('tecnicos.inicio_tecnico', compact('sols_individuales', 'seleccionado'));
+      }
     }
 
     public function entrar(Request $request) {
@@ -47,7 +41,7 @@ class TecnicoController extends Controller
     }
 
   public function registro() {
-      $seleccionado = 2;
+      $seleccionado = 4;
       return view('tecnicos.registra_tecnico', compact('seleccionado'));
     }
 
@@ -88,16 +82,16 @@ class TecnicoController extends Controller
     }
 
     public function lista() {
-      $seleccionado = 3;
+      $seleccionado = 5;
       $tecnicos = \App\Tecnico::all();
       return view('tecnicos.lista_tecnicos', compact('tecnicos', 'seleccionado'));
     }
 
     public function mants() {
       \Carbon\Carbon::setLocale('es');
-      $seleccionado = 4;
+      $seleccionado = 7;
       $mants = \App\Solicitud::whereNull('tecnico_id')->get();
-      $tecs = \App\Tecnico::where('activo', 1)->get();
+      $tecs = \App\Tecnico::where('activo', 1)->where('tipo_usuario', 2)->get();
       return view('tecnicos.mantenimientos', compact('seleccionado', 'mants', 'tecs'));
     }
 
@@ -112,14 +106,33 @@ class TecnicoController extends Controller
       ]);
     }
 
+    public function crea_tarea() {
+      $seleccionado = 9;
+      $equipos = \App\Equipo::all();
+      $maestros = \App\Maestro::all();
+      $tecs = \App\Tecnico::all();
+      return view('tecnicos.crea_tarea', compact('seleccionado', 'maestros', 'equipos', 'tecs'));
+    }
+
+    public function inserta_tarea() {
+      \App\Solicitud::create(
+        request(['maestro_id']) +
+        ['fecha_cita' => date('Y-m-d H:i:s')] +
+        ['estado' => 0] +
+        ['tipo_tarea' => 1] +
+        ['descripcion' => request('descripcion')] +
+        ['ruta_sar' => null]);
+        return back();
+    }
+
     public function pendientes() {
-      $seleccionado = 5;
-      $tecnicos = \App\Tecnico::where('activo', 1)->get();
+      $seleccionado = 6;
+      $tecnicos = \App\Tecnico::where('activo', 1)->where('tipo_usuario', 2)->get();
       return view('tecnicos.pendientes', compact('seleccionado', 'tecnicos'));
     }
 
     public function documentos() {
-      $seleccionado = 6;
+      $seleccionado = 8;
       $anios = \App\Solicitud::selectRaw('year(created_at) year')
                 ->groupBy('year')
                 ->orderByRaw('min(created_at) desc')
@@ -138,6 +151,22 @@ class TecnicoController extends Controller
       return view('layouts.interfaz.docs', compact('sols'));
     }
 
+    public function modifica_tecnico($id) {
+      $tecnico = \App\Tecnico::find($id)->update([
+        'nombre' => request('nombre'),
+        'ap_pat' => request('ap_pat'),
+        'ap_mat' => request('ap_mat'),
+        'matricula' => request('matricula'),
+        'email' => request('email'),
+        'tipo_usuario' => request('tipo'),
+        'num_huella' => request('huella')
+      ]);
+
+      return response()->json([
+        'success' => 'Se ha modificado con éxito'
+      ]);
+    }
+
     public function listaDocs() {
       $solicitudes = \App\Solicitud::latest();
       if($mes = request('mes')) {
@@ -153,7 +182,7 @@ class TecnicoController extends Controller
     }
 
     public function equipo() {
-      $seleccionado = 7;
+      $seleccionado = 10;
       $maestros = \App\Maestro::all();
       return view('tecnicos.equipo', compact('seleccionado', 'maestros'));
     }

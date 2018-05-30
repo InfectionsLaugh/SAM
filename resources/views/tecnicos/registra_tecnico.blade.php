@@ -16,7 +16,7 @@
       <div class="md-form"><input type="text" required name="ap_mat" id="ap_mat" class="form-control"><label for="ap_mat">Apellido materno</label></div>
     </div>
     <div class="col-md-3 col-xs-12">
-      <div class="md-form"><input type="text" required name="telefono" id="telefono" class="form-control"><label for="telefono">Número de teléfono</label></div>
+      <div class="md-form"><input type="text" required name="telefono" id="telefono" class="form-control"><label for="telefono">Número de teléfono <i class="fa fa-info-circle" data-toggle="tooltip" data-placement="top" data-html="true" title="El número de teléfono debe coincidir con el formato (xxx) xxx-xxxx."></i></label></div>
     </div>
   </div>
   <div class="row">
@@ -24,7 +24,17 @@
       <div class="md-form"><input type="text" required name="matricula" id="matricula" class="form-control"><label for="matricula">Matrícula</label></div>
     </div>
     <div class="col-md-3 col-xs-6">
-      <div class="md-form"><input type="email" name="email" id="email" class="form-control"><label for="email">Correo</label></div>
+      <div class="md-form">
+        <div class="col-md-6">
+          <div class="md-for">
+            <input type="email" name="email" id="email" class="form-control">
+            <label for="email">Correo</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="">@uabc.edu.mx</label>
+        </div>
+      </div>
     </div>
     <div class="col-md-3 col-xs-6">
       <div class="md-form">

@@ -37,8 +37,9 @@ class SolicitudController extends Controller
       request(['maestro_id']) +
       ['fecha_cita' => date('Y-m-d H:i:s')] +
       ['estado' => 0] +
-      ['tipo_solicitud' => 1] +
-      ['ruta_sar' => 'pdf/mantenimientos/'. date('Y') . '/' . $ubi[0].'/'.$piso]
+      ['tipo_tarea' => 1] +
+      ['descripcion' => request('descProblema')] +
+      ['ruta_sar' => 'pdf/mantenimientos/'. date('Y') . '/' . date('F') . '/' . $ubi[0].'/'.$piso]
     );
     if(!file_exists('pdf/mantenimientos/'. date('Y') . '/' . $soli->created_at->format('F') . '/' . $ubi[0].'/'.$piso.'/'.request('nombre'))) mkdir('pdf/mantenimientos/'. date('Y') . '/' . $soli->created_at->format('F') . '/' . $ubi[0].'/'.$piso.'/'.request('nombre'), 0777, true);
 

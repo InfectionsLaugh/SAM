@@ -55,6 +55,128 @@ $(document).ready(function () {
     });
   });
 
+  $(document).on('click', '.del_maestro', function(e) {
+    e.preventDefault();
+
+    var maestro_id = $(this).data('id');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept' : 'application/json'
+      }
+    });
+
+    $.ajax({
+      type : 'POST',
+      dataType : 'JSON',
+      data : {
+        id : maestro_id,
+        _method : 'PATCH',
+      },
+      url : '/sam-admin/borra_maestro/'+maestro_id,
+      success : function(msg) {
+        toastr["success"]("Se han actualizado los datos correctamente");
+        $('#maestros').html(msg.view);
+      }, error : function(msg) {
+        for(var k in msg.responseJSON.errors) {
+          console.log(k, msg.responseJSON.errors[k][0]);
+          toastr['error'](msg.responseJSON.errors[k][0]);
+        }
+      }
+    });
+  });
+
+  $(document).on('click', '.mod_maestro', function(e) {
+    e.preventDefault();
+
+    var maestro_id = $(this).data('id');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept' : 'application/json'
+      }
+    });
+
+    $.ajax({
+      type : 'POST',
+      dataType : 'JSON',
+      data : {
+        id : maestro_id,
+        _method : 'PATCH',
+        nombre : $('#nombre_maestro_'+maestro_id).val(),
+        ap_pat : $('#aps_maestro_'+maestro_id).val().split(' ')[0],
+        ap_mat : $('#aps_maestro_'+maestro_id).val().split(' ')[1],
+        email : $('#email_maestro_'+maestro_id).val(),
+        num_empleado : $('#num_empleado_maestro_'+maestro_id).val(),
+        extension_cubo : $('#extension_maestro_'+maestro_id).val(),
+        ubicacion : $('#ubicacion_maestro_'+maestro_id).val()
+      },
+      url : '/sam-admin/act_maestro/'+maestro_id,
+      success : function(msg) {
+        toastr["success"]("Se han actualizado los datos correctamente");
+        console.log(msg);
+      }, error : function(msg) {
+        for(var k in msg.responseJSON.errors) {
+          console.log(k, msg.responseJSON.errors[k][0]);
+          toastr['error'](msg.responseJSON.errors[k][0]);
+        }
+      }
+    });
+  });
+
+  $(document).on('click', '.completa_soli', function(e) {
+    e.preventDefault();
+    var id = $(this).data('id');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept' : 'application/json'
+      }
+    });
+
+    $.ajax({
+      type : "POST",
+      dataType : "JSON",
+      data : {
+        id : id,
+        _method : 'PATCH'
+      },
+      url : '/sam-admin/completa_tarea/'+id,
+      success : function(msg) {
+        toastr["success"]("La tarea se ha completado.");
+      }, error : function(msg) {
+        toastr["error"]('Ha ocurrido un error asignando al técnico');
+      }
+    });
+  });
+
+  $(document).on('click', '.btn_sar', function(e) {
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Accept' : 'application/json'
+      }
+    });
+    var id = $(this).attr('id');
+    $.ajax({
+      type : 'POST',
+      dataType : 'JSON',
+      data : {
+        id : id
+      },
+      url : '/sam-admin/sar_soli/'+id,
+      success : function(msg) {
+        console.log(msg.view);
+        $('.modal-body').html(msg.view);
+      }, error : function(msg) {
+
+      }
+    });
+  });
+
   $('.updt-sol').click(function(e) {
     e.preventDefault();
 
@@ -135,6 +257,73 @@ $(document).ready(function () {
     });
   });
 
+  $(document).on('click', '.mod_tec', function() {
+    var tec_id = $(this).data('id');
+
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      type : 'POST',
+      dataType : 'JSON',
+      data : {
+        id : tec_id,
+        _method : 'PATCH',
+        nombre : $('#nombre_tecnico_'+tec_id).val(),
+        ap_pat : $('#aps_tecnico_'+tec_id).val().split(' ')[0],
+        ap_mat : $('#aps_tecnico_'+tec_id).val().split(' ')[1],
+        email : $('#email_tecnico_'+tec_id).val(),
+        matricula : $('#matr_tecnico_'+tec_id).val(),
+        tipo : $('#tipo_usuario_'+tec_id).find(':selected').val(),
+        huella : $('#huella_tecnico_'+tec_id).val()
+      },
+      url : '/sam-admin/modifica_tecnico/'+tec_id,
+      success : function(msg) {
+        toastr["success"]('Se ha modificado con éxito al técnico.');
+      }, error : function(msg) {
+        for(var k in msg.responseJSON.errors) {
+          console.log(k, msg.responseJSON.errors[k][0]);
+          toastr['error'](msg.responseJSON.errors[k][0]);
+        }
+      }
+    });
+  });
+
+  $('#registra_maestro').on('click', function(e) {
+    e.preventDefault();
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    $.ajax({
+      type : 'POST',
+      dataType : 'JSON',
+      data : {
+        nombre : $('#nombre_maestro').val(),
+        ap_pat : $('#ap_pat_maestro').val(),
+        ap_mat : $('#ap_mat_maestro').val(),
+        email : $('#email_maestro').val(),
+        num_empleado : $('#num_empleado').val(),
+        extension_cubo : $('#extension_maestro').val(),
+        ubicacion : $('#edificio').val() + ' ' + $('#planta').val()
+      },
+      url : '/sam-admin/registra_maestro',
+      success : function(msg) {
+        toastr['success']('Se ha registrado al maestro con éxito');
+      }, error : function(msg) {
+        for(var k in msg.responseJSON.errors) {
+          console.log(k, msg.responseJSON.errors[k][0]);
+          toastr['error'](msg.responseJSON.errors[k][0]);
+        }
+      }
+    });
+  });
+
   $(document).on("click", '.horario', function(e) {
     e.preventDefault();
     var id = $(this).attr('id');
@@ -159,6 +348,10 @@ $(document).ready(function () {
         console.log(msg);
       }
     });
+  });
+
+  $(function() {
+    $('[data-toggle="tooltip"]').tooltip();
   });
 
   $(document).on('click', '.del_tec', function() {
